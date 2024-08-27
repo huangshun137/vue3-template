@@ -109,14 +109,15 @@ service.interceptors.request.use(
 
 const loadingColse = () => {
   loadingCount.value--;
-  if (loadingCount.value <= 0) {
-    downloadLoadingInstance && downloadLoadingInstance.close();
+  if (loadingCount.value <= 0 && downloadLoadingInstance) {
+    downloadLoadingInstance.close();
+    downloadLoadingInstance = null;
   }
 };
 
 service.interceptors.response.use(
   (res) => {
-    console.log(res);
+    // console.log(res);
     loadingColse();
     const requestStore = useRequestStore();
     requestStore.deleteRequest(res.config.url!, res.config.method!);
